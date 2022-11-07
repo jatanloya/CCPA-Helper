@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const controller = require("../controllers/index");
 
-//* Auth Routes
-router.get("/", controller.hello);
+//*Test Route
+router.get("/", controller.populate);
+
+//* Get Data Route
+router.get("/data/:company", controller.getData);
 
 module.exports = router;

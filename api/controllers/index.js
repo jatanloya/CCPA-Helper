@@ -1,5 +1,7 @@
-const { hello } = require("./hello");
+const { getData } = require("./fetchController");
+const { populate } = require("./populate");
 
 module.exports = {
-  hello,
+  populate,
+  getData,
 };

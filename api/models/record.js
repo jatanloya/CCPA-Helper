@@ -14,12 +14,11 @@ const rightSchema = new mongoose.Schema({
   },
   logo: {
     type: Boolean,
-    default: false,
   },
 });
 //* Defining a single Record Schema
 const recordSchema = new mongoose.Schema({
-  comapny: {
+  company: {
     required: true,
     type: String,
   },
