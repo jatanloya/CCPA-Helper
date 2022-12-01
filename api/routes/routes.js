@@ -5,6 +5,6 @@ const controller = require("../controllers/index");
 router.get("/", controller.populate);
 
 //* Get Data Route
-router.get("/data/:company", controller.getData);
+router.get("/data", controller.getData);
 
 module.exports = router;

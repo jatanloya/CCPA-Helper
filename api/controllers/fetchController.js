@@ -3,12 +3,12 @@ const { sendError, sendResponse } = require("../utils/responseHandler");
 
 async function getData(req, res) {
   try {
-    const company = req.params.company;
-    console.log(company);
+    const mainURL = req.query.url;
+    // console.log(mainURL);
     const result = await record.findOne({
-      company: company,
+      mainURL: mainURL,
     });
-    console.log(result);
+    // console.log(result);
     return sendResponse(res, result);
   } catch (error) {
     return sendError(res, error);

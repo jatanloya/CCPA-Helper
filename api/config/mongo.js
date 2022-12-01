@@ -7,10 +7,10 @@ const CL_PWD = process.env.CL_PWD;
 function connectMongo() {
   try {
     // console.log(process.env.DB_NAME, process.env.DB_PWD);
-    var mongouri = `mongodb://localhost:27017/${dbName}:${dbPass}`; //! For Local Dev
-    var clusteruri = `mongodb+srv://${UNAME}:${CL_PWD}@cluster0.gtnn56q.mongodb.net/?retryWrites=true&w=majority`; //! Heroku
+    // var mongouri = `mongodb://localhost:27017/${dbName}:${dbPass}`; //! For Local Dev
+    var mongouri = `mongodb+srv://${UNAME}:${CL_PWD}@cluster0.gtnn56q.mongodb.net/?retryWrites=true&w=majority`; //! Heroku
     mongoose.connect(
-      clusteruri,
+      mongouri,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
