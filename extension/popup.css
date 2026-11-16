@@ -1,0 +1,250 @@
+:root {
+  --blue: #1a73e8;
+  --blue-light: #e8f0fe;
+  --green: #34a853;
+  --green-light: #e6f4ea;
+  --red: #ea4335;
+  --red-light: #fce8e6;
+  --gray: #5f6368;
+  --gray-light: #dadce0;
+  --gray-bg: #f8f9fa;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --white: #ffffff;
+  --radius: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--white);
+  width: 360px;
+}
+
+.popup {
+  padding: 16px;
+}
+
+/* Header */
+.header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.header__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.header__domain {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+/* States */
+.state {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.state--hidden {
+  display: none;
+}
+
+.state__text {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.state__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.state__icon--error {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+.state__icon--not-found {
+  background: var(--gray-bg);
+  color: var(--gray);
+}
+
+/* Spinner */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gray-light);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Retry button */
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.btn--retry {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.btn--retry:hover {
+  background: #1557b0;
+}
+
+/* Company info */
+.company-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.company-info__name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.badge--success {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.badge--danger {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+/* Rights list */
+.rights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.right-card {
+  background: var(--gray-bg);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.right-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right-card__indicator {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.right-card__indicator--yes {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.right-card__indicator--no {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+.right-card__label {
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.right-card__mechanism {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
+.right-card__link {
+  display: block;
+  margin-top: 6px;
+  margin-left: 30px;
+  font-size: 12px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.right-card__link:hover {
+  text-decoration: underline;
+}
+
+/* Meta section */
+.meta {
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meta__link {
+  font-size: 12px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.meta__link:hover {
+  text-decoration: underline;
+}
+
+.meta__date {
+  font-size: 11px;
+  color: var(--text-secondary);
+}

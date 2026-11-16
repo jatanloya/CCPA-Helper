@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CCPA Helper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <header class="header">
+      <h1 class="header__title">CCPA Helper</h1>
+      <p class="header__domain" id="domain-display"></p>
+    </header>
+
+    <div id="state-loading" class="state">
+      <div class="spinner"></div>
+      <p class="state__text">Looking up CCPA info...</p>
+    </div>
+
+    <div id="state-error" class="state state--hidden">
+      <div class="state__icon state__icon--error">!</div>
+      <p class="state__text" id="error-message">Could not reach the API.</p>
+      <button class="btn btn--retry" id="btn-retry">Retry</button>
+    </div>
+
+    <div id="state-not-found" class="state state--hidden">
+      <div class="state__icon state__icon--not-found">?</div>
+      <p class="state__text">No CCPA record found for this site.</p>
+    </div>
+
+    <div id="state-result" class="state state--hidden">
+      <div class="company-info">
+        <h2 class="company-info__name" id="company-name"></h2>
+        <span class="badge" id="ccpa-badge"></span>
+      </div>
+
+      <div class="rights-list" id="rights-list"></div>
+
+      <div class="meta" id="meta-section">
+        <a id="policy-link" class="meta__link" href="#" target="_blank" rel="noopener">
+          View Privacy Policy
+        </a>
+        <p class="meta__date" id="policy-date"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

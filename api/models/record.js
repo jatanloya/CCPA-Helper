@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-//* Defining a Right Schema
 const rightSchema = new mongoose.Schema({
   exists: {
     type: Boolean,
@@ -16,46 +15,60 @@ const rightSchema = new mongoose.Schema({
     type: Boolean,
   },
 });
-//* Defining a single Record Schema
-const recordSchema = new mongoose.Schema({
-  company: {
-    required: true,
-    type: String,
-  },
-  mainURL: {
-    required: true,
-    type: String,
-  },
-  dateOfPolicy: {
-    required: true,
-    type: Date,
-  },
-  policyURL: {
-    type: String,
-  },
-  CCPA: {
-    required: true,
-    type: Boolean,
-  },
-  clicks: {
-    required: true,
-    type: Number,
-  },
-  //* Embedding Right Schema in Record Schema
-  rtk: {
-    type: rightSchema,
-  },
-  rtd: {
-    type: rightSchema,
-  },
-  rto: {
-    type: rightSchema,
-  },
-});
 
-const right = mongoose.model("rights", rightSchema);
+const recordSchema = new mongoose.Schema(
+  {
+    company: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    mainURL: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    dateOfPolicy: {
+      type: Date,
+      required: true,
+    },
+    policyURL: {
+      type: String,
+    },
+    CCPA: {
+      type: Boolean,
+      required: true,
+    },
+    clicks: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    rtk: {
+      type: rightSchema,
+    },
+    rtd: {
+      type: rightSchema,
+    },
+    rto: {
+      type: rightSchema,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform(_doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
+);
+
+recordSchema.index({ company: "text", mainURL: "text" });
+
 const record = mongoose.model("records", recordSchema);
-module.exports = {
-  record,
-  right,
-};
+
+module.exports = { record };

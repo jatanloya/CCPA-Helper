@@ -1,22 +1,19 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve("../.env") });
-// require('dotenv').config({ path:'/home/ubuntu/KMC-Neuro-ARS/.env' });
+require("dotenv").config({ path: require("path").resolve(__dirname, "../.env") });
+const { validateEnv } = require("./config/env");
+const { connectMongo, disconnectMongo } = require("./config/mongo");
+const app = require("./app");
 
-const express = require("express");
-const app = express();
 const port = process.env.PORT || 8000;
-const db = require("./config/mongo");
-const routes = require("./routes/routes");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+async function start() {
+  validateEnv();
+  await connectMongo();
+  app.listen(port, () => console.log(`Listening on ${port}`));
+}
 
-db.connectMongo();
-
-app.use("/api", routes);
-
-app.listen(port, () => {
-  console.log(`Listening on ${port}`);
+start().catch((err) => {
+  console.error("Failed to start server:", err);
+  process.exit(1);
 });
 
 process.on("SIGTERM", shutDown);
@@ -24,7 +21,6 @@ process.on("SIGINT", shutDown);
 
 async function shutDown() {
   console.log("Received kill signal, shutting down gracefully");
-  await db.disconnectMongo();
-  console.log("Server Shutdown");
+  await disconnectMongo();
   process.exit(0);
 }

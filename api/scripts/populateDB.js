@@ -1,43 +1,51 @@
-const { record, right } = require("../models/record");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
+const mongoose = require("mongoose");
+const { record } = require("../models/record");
 
-// const parseExcel = require("convert-excel-to-json");
+async function seed() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    console.error("MONGO_URI environment variable is not set");
+    process.exit(1);
+  }
 
-// const result = parseExcel({
-//   sourceFile: "./ispp-data.xlsx",
-// });
+  await mongoose.connect(uri);
+  console.log("Connected to MongoDB");
 
-// console.log(result);
-async function populate() {
-  const rtkObj = new right({
-    exists: true,
-    mechanism: "Form",
-    url: "https://help.twitter.com/en/forms/privacy",
-  });
-  const rtdObj = new right({
-    exists: true,
-    mechanism: "Manual",
-    url: "https://help.twitter.com/en/managing-your-account/how-to-deactivate-twitter-account",
-  });
-  const rtoObj = new right({
-    exists: true,
-    mechanism: "Manual",
-    url: "https://optout.aboutads.info/",
-    logo: true,
-  });
-  const recordObj = new record({
-    comapny: "Twitter",
+  const sampleRecord = {
+    company: "Twitter",
     mainURL: "https://twitter.com/",
-    dateOfPolicy: Date.now(),
+    dateOfPolicy: new Date(),
     policyURL: "https://twitter.com/en/privacy",
     CCPA: true,
     clicks: 2,
-    //* Embedding Right Schema in Record Schema
-    rtk: rtkObj,
-    rtd: rtdObj,
-    rto: rtoObj,
-  });
+    rtk: {
+      exists: true,
+      mechanism: "Form",
+      url: "https://help.twitter.com/en/forms/privacy",
+    },
+    rtd: {
+      exists: true,
+      mechanism: "Manual",
+      url: "https://help.twitter.com/en/managing-your-account/how-to-deactivate-twitter-account",
+    },
+    rto: {
+      exists: true,
+      mechanism: "Manual",
+      url: "https://optout.aboutads.info/",
+      logo: true,
+    },
+  };
 
-  const result = await recordObj.save();
-  console.log(result);
+  const result = await record.create(sampleRecord);
+  console.log("Seeded record:", result.company);
+
+  await mongoose.connection.close();
+  console.log("Done");
 }
-populate();
+
+seed().catch((err) => {
+  console.error("Seed failed:", err);
+  process.exit(1);
+});
