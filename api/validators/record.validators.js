@@ -28,8 +28,18 @@ const querySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
 });
 
+const searchSchema = z.object({
+  q: z
+    .string({ required_error: "Query parameter 'q' is required" })
+    .trim()
+    .min(1, "Query parameter 'q' is required"),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
+
 module.exports = {
   createRecordSchema,
   updateRecordSchema,
   querySchema,
+  searchSchema,
 };

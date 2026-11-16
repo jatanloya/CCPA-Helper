@@ -95,6 +95,28 @@ describe("GET /api/records", () => {
     expect(res.body.data[0].company).toBe("Alpha");
   });
 
+  it("applies default pagination values", async () => {
+    const res = await request(app).get("/api/records");
+    expect(res.status).toBe(200);
+    expect(res.body.pagination).toEqual({
+      page: 1,
+      limit: 20,
+      total: 3,
+      pages: 1,
+    });
+  });
+
+  it("treats company filter as a literal string, not a regex", async () => {
+    const res = await request(app).get("/api/records?company=(");
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveLength(0);
+  });
+
+  it("returns 400 for a non-numeric limit", async () => {
+    const res = await request(app).get("/api/records?limit=abc");
+    expect(res.status).toBe(400);
+  });
+
   it("filters by url", async () => {
     const res = await request(app).get(
       "/api/records?url=https://beta.com/"
@@ -184,7 +206,12 @@ describe("GET /api/records/search", () => {
   it("returns 400 when q is missing", async () => {
     const res = await request(app).get("/api/records/search");
     expect(res.status).toBe(400);
-    expect(res.body.error).toMatch(/required/i);
+    expect(res.body.details[0].message).toMatch(/required/i);
+  });
+
+  it("returns 400 for an out-of-range limit", async () => {
+    const res = await request(app).get("/api/records/search?q=Google&limit=0");
+    expect(res.status).toBe(400);
   });
 });
 
@@ -198,5 +225,6 @@ describe("GET /api/data (backward compat)", () => {
     expect(res.body.success).toBe(true);
     expect(res.body.data).toHaveLength(1);
     expect(res.body.data[0].company).toBe("Twitter");
+    expect(res.body.pagination.limit).toBe(1);
   });
 });

@@ -6,6 +6,7 @@ const {
   createRecordSchema,
   updateRecordSchema,
   querySchema,
+  searchSchema,
 } = require("../validators/record.validators");
 
 // Health check
@@ -18,7 +19,7 @@ router.get("/health", (_req, res) => {
     3: "disconnecting",
   };
   res.status(dbState === 1 ? 200 : 503).json({
-    success: true,
+    success: dbState === 1,
     data: {
       status: dbState === 1 ? "healthy" : "unhealthy",
       database: states[dbState] || "unknown",
@@ -29,7 +30,11 @@ router.get("/health", (_req, res) => {
 
 // Record CRUD
 router.get("/records", validate(querySchema, "query"), controller.getRecords);
-router.get("/records/search", controller.searchRecords);
+router.get(
+  "/records/search",
+  validate(searchSchema, "query"),
+  controller.searchRecords
+);
 router.get("/records/:id", controller.getRecordById);
 router.post(
   "/records",

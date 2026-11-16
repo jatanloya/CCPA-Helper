@@ -1,12 +1,16 @@
 const { record: Record } = require("../models/record");
 const AppError = require("../utils/AppError");
 
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 async function getRecords(req, res, next) {
   try {
     const { url, company, page, limit } = req.query;
     const filter = {};
     if (url) filter.mainURL = url;
-    if (company) filter.company = new RegExp(company, "i");
+    if (company) filter.company = new RegExp(escapeRegex(company), "i");
 
     const [records, total] = await Promise.all([
       Record.find(filter)
@@ -75,29 +79,21 @@ async function deleteRecord(req, res, next) {
 
 async function searchRecords(req, res, next) {
   try {
-    const { q, page = 1, limit = 20 } = req.query;
-    if (!q) throw new AppError("Query parameter 'q' is required", 400);
-
+    const { q, page, limit } = req.query;
     const filter = { $text: { $search: q } };
-    const skip = (Number(page) - 1) * Number(limit);
 
     const [records, total] = await Promise.all([
       Record.find(filter, { score: { $meta: "textScore" } })
         .sort({ score: { $meta: "textScore" } })
-        .skip(skip)
-        .limit(Number(limit)),
+        .skip((page - 1) * limit)
+        .limit(limit),
       Record.countDocuments(filter),
     ]);
 
     res.json({
       success: true,
       data: records,
-      pagination: {
-        page: Number(page),
-        limit: Number(limit),
-        total,
-        pages: Math.ceil(total / Number(limit)),
-      },
+      pagination: { page, limit, total, pages: Math.ceil(total / limit) },
     });
   } catch (err) {
     next(err);
