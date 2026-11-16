@@ -2,6 +2,31 @@
 
 A DSAR (Data Subject Access Request) middleware API for CCPA compliance. Helps manage and look up company privacy rights including Right to Know (RTK), Right to Delete (RTD), and Right to Opt-Out (RTO).
 
+## Browser Extension
+
+A Chrome extension that shows CCPA privacy rights for the website you're visiting.
+
+### Install
+
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (top-right toggle)
+3. Click **Load unpacked** and select the `extension/` folder
+4. The CCPA Helper icon appears in your toolbar
+
+### Usage
+
+1. Make sure the API is running (`cd api && npm run dev`)
+2. Visit any website
+3. Click the CCPA Helper icon to see the company's privacy rights:
+   - Right to Know (RTK)
+   - Right to Delete (RTD)
+   - Right to Opt-Out (RTO)
+4. Click "Exercise this right" links to go directly to the company's DSAR forms
+
+The extension queries the API at `http://localhost:8000` by default. To change this, edit the `API_BASE_URL` constant in `extension/background.js`.
+
+---
+
 ## Quick Start
 
 ```bash
@@ -114,3 +139,4 @@ npm run seed
 - **Security:** Helmet, CORS, express-rate-limit
 - **Testing:** Vitest, Supertest, mongodb-memory-server
 - **CI:** GitHub Actions
+- **Extension:** Chrome Manifest V3, vanilla JS
