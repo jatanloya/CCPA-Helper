@@ -6,6 +6,9 @@ let mongoServer;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   await mongoose.connect(mongoServer.getUri());
+  // Build indexes up front so unique/text-index tests don't race the
+  // background index build.
+  await mongoose.connection.syncIndexes();
 });
 
 afterAll(async () => {
