@@ -21,14 +21,19 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "mongoose": "^9.6.2",
-    "zod": "^3.24.2"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "eslint": "^9.20.0",
-    "mongodb-memory-server": "^10.4.0",
+    "mongodb-memory-server": "^11.3.0",
     "nodemon": "^3.1.9",
     "supertest": "^7.1.0",
-    "vitest": "^3.0.7"
+    "vitest": "^5.1.0"
+  },
+  "overrides": {
+    "nodemon": {
+      "minimatch": "^11.0.1"
+    }
   }
 }

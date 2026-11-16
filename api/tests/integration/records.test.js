@@ -158,6 +158,15 @@ describe("PUT /api/records/:id", () => {
     expect(res.body.data.company).toBe("X Corp");
   });
 
+  it("does not reset fields omitted from a partial update", async () => {
+    const doc = await Record.create({ ...sampleRecord, clicks: 42 });
+    const res = await request(app)
+      .put(`/api/records/${doc._id}`)
+      .send({ company: "X Corp" });
+    expect(res.status).toBe(200);
+    expect(res.body.data.clicks).toBe(42);
+  });
+
   it("returns 404 for non-existent id", async () => {
     const fakeId = "aaaaaaaaaaaaaaaaaaaaaaaa";
     const res = await request(app)
